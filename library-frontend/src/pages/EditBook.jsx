@@ -1,10 +1,12 @@
 import {
   ArrowLeft,
-  BookPlus,
+  Pencil,
 } from "lucide-react";
 
 import {
+  Navigate,
   useNavigate,
+  useParams,
 } from "react-router-dom";
 
 import BookForm from "../components/BookForm";
@@ -17,15 +19,41 @@ import {
   useToast,
 } from "../context/ToastContext";
 
-function AddBook() {
+function EditBook() {
+  const { id } = useParams();
+
   const navigate = useNavigate();
 
-  const { addBook } = useLibrary();
+  const {
+    books,
+    updateBook,
+    getBorrowedCount,
+  } = useLibrary();
+
   const { showToast } = useToast();
+
+  const book = books.find(
+    (item) => item.id === id
+  );
+
+  if (!book) {
+    return (
+      <Navigate
+        to="/books"
+        replace
+      />
+    );
+  }
+
+  const borrowed =
+    getBorrowedCount(book.id);
 
   const handleSubmit = (bookData) => {
     const result =
-      addBook(bookData);
+      updateBook(
+        book.id,
+        bookData
+      );
 
     if (!result.success) {
       showToast(
@@ -37,11 +65,13 @@ function AddBook() {
     }
 
     showToast(
-      `${result.book.title} added successfully.`,
+      "Book updated successfully.",
       "success"
     );
 
-    navigate("/books");
+    navigate(
+      `/books/${book.id}`
+    );
   };
 
   return (
@@ -59,10 +89,10 @@ function AddBook() {
 
       <div className="page-title-section">
         <div>
-          <h1>Add New Book</h1>
+          <h1>Edit Book</h1>
 
           <p>
-            Add a new title to the library catalogue.
+            Update catalogue information for {book.id}.
           </p>
         </div>
       </div>
@@ -70,24 +100,31 @@ function AddBook() {
       <div className="form-card">
 
         <div className="form-card-heading">
+
           <div className="form-heading-icon">
-            <BookPlus size={22} />
+            <Pencil size={21} />
           </div>
 
           <div>
             <h2>Book Information</h2>
+
             <p>
-              Enter the book's catalogue details.
+              {borrowed > 0
+                ? `${borrowed} copies are currently borrowed. Total copies cannot be reduced below this number.`
+                : "Update the information below."}
             </p>
           </div>
+
         </div>
 
         <BookForm
-          initialData={null}
-          submitText="Add Book"
+          initialData={book}
+          submitText="Save Changes"
           onSubmit={handleSubmit}
           onCancel={() =>
-            navigate("/books")
+            navigate(
+              `/books/${book.id}`
+            )
           }
         />
 
@@ -97,4 +134,4 @@ function AddBook() {
   );
 }
 
-export default AddBook;
+export default EditBook;

@@ -1,10 +1,12 @@
 import {
   ArrowLeft,
-  UserPlus,
+  UserRoundPen,
 } from "lucide-react";
 
 import {
+  Navigate,
   useNavigate,
+  useParams,
 } from "react-router-dom";
 
 import MemberForm
@@ -18,20 +20,41 @@ import {
   useToast,
 } from "../context/ToastContext";
 
-function AddMember() {
+function EditMember() {
+  const { id } = useParams();
+
   const navigate = useNavigate();
 
   const {
-    createMember,
+    users,
+    updateMember,
   } = useAuth();
 
   const {
     showToast,
   } = useToast();
 
+  const member = users.find(
+    (user) =>
+      user.id === id &&
+      user.role === "member"
+  );
+
+  if (!member) {
+    return (
+      <Navigate
+        to="/members"
+        replace
+      />
+    );
+  }
+
   const handleSubmit = (memberData) => {
     const result =
-      createMember(memberData);
+      updateMember(
+        member.id,
+        memberData
+      );
 
     if (!result.success) {
       showToast(
@@ -43,12 +66,12 @@ function AddMember() {
     }
 
     showToast(
-      `${result.member.name} registered successfully.`,
+      "Member updated successfully.",
       "success"
     );
 
     navigate(
-      `/members/${result.member.id}`
+      `/members/${member.id}`
     );
   };
 
@@ -58,20 +81,22 @@ function AddMember() {
       <button
         className="back-button"
         onClick={() =>
-          navigate("/members")
+          navigate(
+            `/members/${member.id}`
+          )
         }
       >
         <ArrowLeft size={17} />
-        Back to Members
+        Back to Member
       </button>
 
       <div className="page-title-section">
         <div>
-          <h1>Add Member</h1>
+          <h1>Edit Member</h1>
 
           <p>
-            Register a new library
-            member and login account.
+            Update account information
+            for {member.id}.
           </p>
         </div>
       </div>
@@ -81,25 +106,28 @@ function AddMember() {
         <div className="form-card-heading">
 
           <div className="form-heading-icon">
-            <UserPlus size={22} />
+            <UserRoundPen size={22} />
           </div>
 
           <div>
             <h2>Member Information</h2>
 
             <p>
-              The member ID will be
-              generated automatically.
+              Changes will also update
+              the member's account.
             </p>
           </div>
 
         </div>
 
         <MemberForm
-          submitText="Add Member"
+          initialData={member}
+          submitText="Save Changes"
           onSubmit={handleSubmit}
           onCancel={() =>
-            navigate("/members")
+            navigate(
+              `/members/${member.id}`
+            )
           }
         />
 
@@ -109,4 +137,4 @@ function AddMember() {
   );
 }
 
-export default AddMember;
+export default EditMember;
