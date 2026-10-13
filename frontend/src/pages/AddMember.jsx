@@ -29,9 +29,9 @@ function AddMember() {
     showToast,
   } = useToast();
 
-  const handleSubmit = (memberData) => {
+  const handleSubmit = async (memberData) => {
     const result =
-      createMember(memberData);
+      await createMember(memberData);
 
     if (!result.success) {
       showToast(

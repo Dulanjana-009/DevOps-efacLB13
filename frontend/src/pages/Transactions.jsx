@@ -36,7 +36,7 @@ function Transactions() {
           transaction.memberName
             .toLowerCase()
             .includes(term) ||
-          transaction.memberId
+          (transaction.memberCode || transaction.memberId)
             .toLowerCase()
             .includes(term) ||
           transaction.bookTitle
@@ -203,7 +203,7 @@ function Transactions() {
 
                           <div className="table-secondary">
                             {
-                              transaction.memberId
+                              (transaction.memberCode || transaction.memberId)
                             }
                           </div>
                         </td>

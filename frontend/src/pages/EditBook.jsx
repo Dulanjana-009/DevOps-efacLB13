@@ -48,9 +48,9 @@ function EditBook() {
   const borrowed =
     getBorrowedCount(book.id);
 
-  const handleSubmit = (bookData) => {
+  const handleSubmit = async (bookData) => {
     const result =
-      updateBook(
+      await updateBook(
         book.id,
         bookData
       );

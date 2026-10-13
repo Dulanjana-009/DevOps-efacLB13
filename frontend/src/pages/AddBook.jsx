@@ -23,9 +23,9 @@ function AddBook() {
   const { addBook } = useLibrary();
   const { showToast } = useToast();
 
-  const handleSubmit = (bookData) => {
+  const handleSubmit = async (bookData) => {
     const result =
-      addBook(bookData);
+      await addBook(bookData);
 
     if (!result.success) {
       showToast(

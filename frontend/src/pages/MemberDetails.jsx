@@ -80,7 +80,7 @@ function MemberDetails() {
         </div>
 
         <div className="member-profile-title">
-          <span>{member.id}</span>
+          <span>{member.memberId || member.id}</span>
 
           <h1>{member.name}</h1>
 
@@ -111,7 +111,7 @@ function MemberDetails() {
         <InfoCard
           icon={<User />}
           label="Member ID"
-          value={member.id}
+          value={member.memberId || member.id}
         />
 
         <InfoCard

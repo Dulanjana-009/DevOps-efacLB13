@@ -49,9 +49,9 @@ function EditMember() {
     );
   }
 
-  const handleSubmit = (memberData) => {
+  const handleSubmit = async (memberData) => {
     const result =
-      updateMember(
+      await updateMember(
         member.id,
         memberData
       );

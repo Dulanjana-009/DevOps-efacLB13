@@ -32,10 +32,10 @@ function Register() {
     setError("");
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
   event.preventDefault();
 
-  const result = registerMember(formData);
+  const result = await registerMember(formData);
 
   if (!result.success) {
     setError(result.message);

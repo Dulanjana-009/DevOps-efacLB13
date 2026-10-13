@@ -87,7 +87,7 @@ function Members() {
     );
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!memberToDelete) {
       return;
     }
@@ -108,7 +108,7 @@ function Members() {
     }
 
     const result =
-      deleteMemberAccount(
+      await deleteMemberAccount(
         memberToDelete.id
       );
 

@@ -65,13 +65,13 @@ function Profile() {
     }));
   };
 
-  const handleProfileSubmit = (
+  const handleProfileSubmit = async (
     event
   ) => {
     event.preventDefault();
 
     const result =
-      updateOwnProfile(profileData);
+      await updateOwnProfile(profileData);
 
     if (!result.success) {
       showToast(
@@ -88,7 +88,7 @@ function Profile() {
     );
   };
 
-  const handlePasswordSubmit = (
+  const handlePasswordSubmit = async (
     event
   ) => {
     event.preventDefault();
@@ -105,7 +105,7 @@ function Profile() {
       return;
     }
 
-    const result = changePassword({
+    const result = await changePassword({
       currentPassword:
         passwordData.currentPassword,
 

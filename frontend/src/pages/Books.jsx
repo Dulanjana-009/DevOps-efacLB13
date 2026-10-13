@@ -61,13 +61,13 @@ function Books() {
         .includes(search.toLowerCase())
   );
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     if (!bookToDelete) {
       return;
     }
 
     const result =
-      deleteBook(bookToDelete.id);
+      await deleteBook(bookToDelete.id);
 
     if (!result.success) {
       showToast(

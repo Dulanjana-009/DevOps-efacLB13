@@ -26,23 +26,21 @@ function Login() {
     setError("");
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const success = login(
+    const result = await login(
       formData.username,
       formData.password
     );
 
-    if (!success) {
-      setError(
-        "Invalid username or password."
-      );
+    if (!result.success) {
+      setError(result.message || "Invalid username or password.");
 
       return;
     }
 
-    navigate("/");
+    navigate("/dashboard");
   };
 
   return (

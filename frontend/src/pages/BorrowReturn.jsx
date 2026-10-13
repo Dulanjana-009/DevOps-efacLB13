@@ -87,7 +87,7 @@ function BorrowReturn() {
           transaction.memberName
             .toLowerCase()
             .includes(search) ||
-          transaction.memberId
+          (transaction.memberCode || transaction.memberId)
             .toLowerCase()
             .includes(search) ||
           transaction.bookTitle
@@ -97,7 +97,7 @@ function BorrowReturn() {
       }
     );
 
-  const handleBorrow = (
+  const handleBorrow = async (
     event
   ) => {
     event.preventDefault();
@@ -120,7 +120,7 @@ function BorrowReturn() {
       return;
     }
 
-    const result = borrowBook(
+    const result = await borrowBook(
       selectedMember,
       selectedBook.id
     );
@@ -142,12 +142,12 @@ function BorrowReturn() {
     setSelectedBookId("");
   };
 
-  const handleReturn = () => {
+  const handleReturn = async () => {
     if (!transactionToReturn) {
       return;
     }
 
-    const result = returnBook(
+    const result = await returnBook(
       transactionToReturn.id
     );
 
@@ -499,7 +499,7 @@ function BorrowReturn() {
 
                             <div className="table-secondary">
                               {
-                                transaction.memberId
+                                (transaction.memberCode || transaction.memberId)
                               }
                             </div>
                           </td>
